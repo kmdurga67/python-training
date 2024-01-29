@@ -1,8 +1,10 @@
-import uvicorn
+# import uvicorn
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Query, Form, File, UploadFile
 from enum import Enum
 from pydantic import BaseModel
+from typing import Union
+# from bson import ObjectId
 
 app = FastAPI()
 
@@ -58,7 +60,7 @@ fake_items_db = [{"item_name": "Foo"}, {
     "item_name": "Bar"}, {"item_name": "New"}]
 
 
-@app.get("/items")
+@app.get("/items/")
 def list_items_db(skip: int = 0, limit: int = 10):
     return fake_items_db[skip: skip + limit]
 
@@ -102,8 +104,51 @@ def update_items(items_id: int, items: Item):
     return ({"items_id": items_id, **items.dict()})
 
 
-# if __name__ == "__main__":   #dunder
-#     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+@app.get("/query")
+def query_function(name: str, roll_no: Union[int, None] = None):
+    var_name = {"name": name, "roll_no": roll_no}
+    return var_name
+
+
+class Schema(BaseModel):
+    name: str
+    class_name: str
+    roll_no: int
+
+
+@app.post("/class")
+def create_request(item: Schema):
+    return item
+
+
+@app.get("/query")
+def query_function(name: Union[str, None] = None, roll_no: Union[int, None] = Query(default=None, min_length=3, max_length=4)):
+    return {"name": name, "roll_no": roll_no}
+
+
+@app.post("/form/data")
+def form_data(username: str = Form(), passowrd: str = Form()):
+    return {"username": username, "password": passowrd}
+
+
+@app.post("/form/file")
+def file_bytes_len(file: bytes = File()):
+    return {"file", len(file)}
+
+
+@app.post("/form/uploadfile")
+def file_upload(fileupload: UploadFile):
+    return {"File": fileupload}
+
+
+data = {
+    1: "durga"
+}
+
+
+if __name__ == "__main__":  # dunder
+    import uvicorn
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
 
     # create API /hello
     # dictionary to post data to particular id
