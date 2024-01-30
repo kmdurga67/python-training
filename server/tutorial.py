@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 import uvicorn
 
 app = FastAPI()
@@ -27,15 +27,26 @@ async def get_data():
 async def add_data(item: str):
     new_key = max(data.keys()) + 1
     data[new_key] = item
-    return {"message": "Data added successfully", "data": data}
+    return {"message": "Data added successfully", new_key: data[new_key]}
 
 
 @app.put("/update_data/{item_id}")
 async def update_data(item_id: int, updated_item: str):
     if item_id not in data:
-        raise HTTPException(status_code=404, detail="Item not found")
-    data[item_id] = updated_item
-    return {"data": data[item_id]}
+        return {"message": "Data Not Found"}
+    else:
+        data[item_id] = updated_item
+        return {"message": f"{item_id} updated successfully", item_id: data[item_id]}
+
+
+@app.delete("/delete_data/{item_id}")
+async def delete_data(item_id: int):
+    if item_id not in data:
+        return {"message": "Data Not Found"}
+    else:
+        deleted_item = data.pop(item_id)
+        return {"message": f"{item_id} deleted successfully", "deleted_item": deleted_item}
+
 
 if __name__ == "__main__":
     uvicorn.run("tutorial:app", host="127.0.0.1", port=8000, reload=True)
