@@ -5,14 +5,14 @@ import sqlite3
 connection = sqlite3.connect('geekforgeeks_student.db')
 cursor = connection.cursor()
 
-# # create table
-# cursor.execute("DROP TABLE IF EXISTS STUDENT")
-# createTable = '''CREATE TABLE STUDENT(
-# Student_ID int, First_Name VARCHAR(100),
-# Last_Name VARCHAR(100), Age int,
-# Department VARCHAR(100)
-# )'''
-# cursor.execute(createTable)
+# create table
+cursor.execute("DROP TABLE IF EXISTS STUDENT")
+createTable = '''CREATE TABLE STUDENT(
+Student_ID INTEGER PRIMARY KEY AUTOINCREMENT, First_Name VARCHAR(100),
+Last_Name VARCHAR(100), Age int,
+Department VARCHAR(100)
+)'''
+cursor.execute(createTable)
 
 # # check the database creation data
 # if cursor:
@@ -21,10 +21,10 @@ cursor = connection.cursor()
 #     print("Database Creation Failed !")
 
 # Insert data into the table
-# cursor.execute("INSERT INTO STUDENT VALUES (1,'Rohit', 'Pathak', 21, 'IT')")
-# cursor.execute("INSERT INTO STUDENT VALUES (2,'Nitin', 'Biradar', 21, 'IT')")
-# cursor.execute("INSERT INTO STUDENT VALUES (3,'Virat', 'Kohli', 30, 'CIVIL')")
-# cursor.execute("INSERT INTO STUDENT VALUES (4,'Rohit', 'Sharma', 32, 'COMP')")
+cursor.execute("INSERT INTO STUDENT VALUES (1,'Rohit', 'Pathak', 21, 'IT')")
+cursor.execute("INSERT INTO STUDENT VALUES (2,'Nitin', 'Biradar', 21, 'IT')")
+cursor.execute("INSERT INTO STUDENT VALUES (3,'Virat', 'Kohli', 30, 'CIVIL')")
+cursor.execute("INSERT INTO STUDENT VALUES (4,'Rohit', 'Sharma', 32, 'COMP')")
 
 # # printing the cursor data
 # if cursor:
@@ -33,12 +33,14 @@ cursor = connection.cursor()
 #     print("Data Insertion Failed !")
 
 # WHERE CLAUSE TO RETRIEVE DATA
-# cursor.execute("SELECT * FROM STUDENT WHERE Department = 'IT'")
-# cursor.execute("SELECT * from STUDENT WHERE First_name Like'R%'")
+cursor.execute("SELECT * FROM STUDENT WHERE Department = 'IT'")
+cursor.execute("SELECT * from STUDENT WHERE First_name Like'R%'")
 
 # WHERE CLAUSE TO UPDATE DATA
-# cursor.execute("UPDATE STUDENT SET Department ='E&TC' WHERE Student_ID = 2")
+cursor.execute("UPDATE STUDENT SET Department ='E&TC' WHERE Student_ID = 2")
 cursor.execute("DELETE from STUDENT WHERE Age = 32")
+cursor.execute(
+    "INSERT INTO STUDENT VALUES (4,'Ritwik', 'Sharma', 38, 'CIVIL')")
 cursor.execute("SELECT * from STUDENT")
 
 # printing the cursor data
